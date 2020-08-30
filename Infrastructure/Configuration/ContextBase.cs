@@ -1,9 +1,10 @@
 ﻿using Entities.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Configuration
 {
-    public class ContextBase : DbContext
+    public class ContextBase : IdentityDbContext<ApplicationUser>
     {
         public ContextBase(DbContextOptions<ContextBase> options):base(options)
         {
@@ -23,8 +24,7 @@ namespace Infrastructure.Configuration
 
         private string GetStringConnectionConfig()
         {
-            string strCon = "Server=LAPTOP-CV9KCCO0\\SQLEXPRESS;Database=EcommerceDDD;Trusted_Connection=True;MultipleActiveResultSets=true";
-            //string strCon = "Server=apolo.hostsrv.org,1433;Database=EcommerceDDD;User ID=cyberlacs777;Password=N75l%5sg";
+            string strCon = "Server=LAPTOP-CV9KCCO0\\SQLEXPRESS01;Database=EcommerceDDD;User Id=sa;password=BancoDeDados;Trusted_Connection=False;MultipleActiveResultSets=true;";
             return strCon;
         }
     }

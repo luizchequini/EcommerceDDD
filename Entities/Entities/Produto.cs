@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Entities
 {
-    [Table("Produto")]
+    [Table("Products")]
     public class Produto : Notifies
     {
         [Column("PRD_ID")]
