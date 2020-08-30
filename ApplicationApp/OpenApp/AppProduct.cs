@@ -18,6 +18,11 @@ namespace ApplicationApp.OpenApp
             _iServiceProduct = iServiceProduct;
         }
 
+        public async Task<List<Produto>> ListarProdutosUsuario(string userId)
+        {
+            return await _iProduct.ListarProdutosUsuario(userId);
+        }
+
         public async Task AddProduct(Produto produto)
         {
             await _iServiceProduct.AddProduct(produto);
@@ -52,6 +57,5 @@ namespace ApplicationApp.OpenApp
         {
             await _iProduct.Update(produto);
         }
-
     }
 }

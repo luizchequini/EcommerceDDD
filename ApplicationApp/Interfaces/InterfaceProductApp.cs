@@ -1,4 +1,5 @@
 ﻿using Entities.Entities;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ApplicationApp.Interfaces
@@ -8,5 +9,7 @@ namespace ApplicationApp.Interfaces
         Task AddProduct(Produto produto);
 
         Task UpdateProduct(Produto produto);
+
+        Task<List<Produto>> ListarProdutosUsuario(string userId);
     }
 }

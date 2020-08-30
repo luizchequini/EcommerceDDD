@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -11,6 +11,8 @@
     <Compile Remove="Migrations\20200830164718_InitialCreate.Designer.cs" />
     <Compile Remove="Migrations\20200830165554_InitialCreate.cs" />
     <Compile Remove="Migrations\20200830165554_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200830193013_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200830193013_InitialCreate.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

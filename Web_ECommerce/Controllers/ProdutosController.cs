@@ -1,6 +1,7 @@
 ﻿using ApplicationApp.Interfaces;
 using Entities.Entities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,16 +11,21 @@ namespace Web_ECommerce.Controllers
     [Authorize]
     public class ProdutosController : Controller
     {
+        public readonly UserManager<ApplicationUser> _userManager;
+
         public readonly InterfaceProductApp _InterfaceProductApp;
-        public ProdutosController(InterfaceProductApp InterfaceProductApp)
+        public ProdutosController(InterfaceProductApp InterfaceProductApp, UserManager<ApplicationUser> userManager)
         {
+            _userManager = userManager;
             _InterfaceProductApp = InterfaceProductApp;
         }
 
         // GET: ProdutosController
         public async Task<IActionResult> Index()
         {
-            return View(await _InterfaceProductApp.List());
+            var idUsuario = await RetornarUsuarioLogado();
+
+            return View(await _InterfaceProductApp.ListarProdutosUsuario(idUsuario));
         }
 
         // GET: ProdutosController/Details/5
@@ -41,6 +47,9 @@ namespace Web_ECommerce.Controllers
         {
             try
             {
+                var idUsuario = await RetornarUsuarioLogado();
+                produto.UserId = idUsuario;
+
                 await _InterfaceProductApp.AddProduct(produto);
 
                 if (produto.Notificacoes.Any())
@@ -50,14 +59,12 @@ namespace Web_ECommerce.Controllers
                         ModelState.AddModelError(item.NomePropriedade, item.Mensagem);
                     }
 
-                    return View("Edit", produto);
+                    return View("Create", produto);
                 }
-
-                
             }
             catch
             {
-                return View("Edit", produto);
+                return View("Create", produto);
             }
 
             return RedirectToAction(nameof(Index));
@@ -121,6 +128,13 @@ namespace Web_ECommerce.Controllers
             {
                 return View();
             }
+        }
+
+        private async Task<string> RetornarUsuarioLogado()
+        {
+            var idUsuario = await _userManager.GetUserAsync(User);
+
+            return idUsuario.Id;
         }
     }
 }

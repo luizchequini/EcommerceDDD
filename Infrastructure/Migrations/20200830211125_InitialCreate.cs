@@ -8,41 +8,6 @@ namespace Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "ApplicationUser",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    UserName = table.Column<string>(nullable: true),
-                    NormalizedUserName = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    NormalizedEmail = table.Column<string>(nullable: true),
-                    EmailConfirmed = table.Column<bool>(nullable: false),
-                    PasswordHash = table.Column<string>(nullable: true),
-                    SecurityStamp = table.Column<string>(nullable: true),
-                    ConcurrencyStamp = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-                    LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false),
-                    USR_CPF = table.Column<string>(maxLength: 50, nullable: true),
-                    USR_IDADE = table.Column<int>(nullable: false),
-                    USR_NOME = table.Column<string>(maxLength: 255, nullable: true),
-                    USR_CEP = table.Column<string>(maxLength: 15, nullable: true),
-                    USR_ENDERECO = table.Column<string>(maxLength: 255, nullable: true),
-                    USR_COMPLEMENTO_ENDERECO = table.Column<string>(maxLength: 450, nullable: true),
-                    USR_CELULAR = table.Column<string>(maxLength: 20, nullable: true),
-                    USR_TELEFONE = table.Column<string>(maxLength: 20, nullable: true),
-                    USR_ESTADO = table.Column<bool>(nullable: false),
-                    USR_TIPO = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ApplicationUser", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
                 {
@@ -74,38 +39,21 @@ namespace Infrastructure.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    USR_CPF = table.Column<string>(maxLength: 50, nullable: true),
+                    USR_IDADE = table.Column<int>(nullable: false),
+                    USR_NOME = table.Column<string>(maxLength: 255, nullable: true),
+                    USR_CEP = table.Column<string>(maxLength: 15, nullable: true),
+                    USR_ENDERECO = table.Column<string>(maxLength: 255, nullable: true),
+                    USR_COMPLEMENTO_ENDERECO = table.Column<string>(maxLength: 450, nullable: true),
+                    USR_CELULAR = table.Column<string>(maxLength: 20, nullable: true),
+                    USR_TELEFONE = table.Column<string>(maxLength: 20, nullable: true),
+                    USR_ESTADO = table.Column<bool>(nullable: false),
+                    USR_TIPO = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TB_PRODUTO",
-                columns: table => new
-                {
-                    PRD_ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PRD_NOME = table.Column<string>(maxLength: 255, nullable: true),
-                    PRD_DESCRICAO = table.Column<string>(maxLength: 255, nullable: true),
-                    PRD_OBSERVACAO = table.Column<string>(maxLength: 2000, nullable: true),
-                    PRD_VALOR = table.Column<decimal>(nullable: false),
-                    PRD_QTD_ESTOQUE = table.Column<int>(nullable: false),
-                    UserId = table.Column<string>(nullable: true),
-                    PRD_ESTADO = table.Column<bool>(nullable: false),
-                    PRD_DATA_CADASTRO = table.Column<DateTime>(nullable: false),
-                    PRD_DATA_ALTERAÇÃO = table.Column<DateTime>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TB_PRODUTO", x => x.PRD_ID);
-                    table.ForeignKey(
-                        name: "FK_TB_PRODUTO_ApplicationUser_UserId",
-                        column: x => x.UserId,
-                        principalTable: "ApplicationUser",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -215,6 +163,33 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TB_PRODUTO",
+                columns: table => new
+                {
+                    PRD_ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PRD_NOME = table.Column<string>(maxLength: 255, nullable: true),
+                    PRD_DESCRICAO = table.Column<string>(maxLength: 255, nullable: true),
+                    PRD_OBSERVACAO = table.Column<string>(maxLength: 2000, nullable: true),
+                    PRD_VALOR = table.Column<decimal>(nullable: false),
+                    PRD_QTD_ESTOQUE = table.Column<int>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
+                    PRD_ESTADO = table.Column<bool>(nullable: false),
+                    PRD_DATA_CADASTRO = table.Column<DateTime>(nullable: false),
+                    PRD_DATA_ALTERAÇÃO = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TB_PRODUTO", x => x.PRD_ID);
+                    table.ForeignKey(
+                        name: "FK_TB_PRODUTO_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TB_COMPRA_USUARIO",
                 columns: table => new
                 {
@@ -235,9 +210,9 @@ namespace Infrastructure.Migrations
                         principalColumn: "PRD_ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_TB_COMPRA_USUARIO_ApplicationUser_UserId",
+                        name: "FK_TB_COMPRA_USUARIO_AspNetUsers_UserId",
                         column: x => x.UserId,
-                        principalTable: "ApplicationUser",
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -321,13 +296,10 @@ namespace Infrastructure.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "TB_PRODUTO");
 
             migrationBuilder.DropTable(
-                name: "ApplicationUser");
+                name: "AspNetUsers");
         }
     }
 }
