@@ -3,6 +3,7 @@ using Domain.Interfaces.InterfaceServices;
 using Entities.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,13 +18,18 @@ namespace Domain.Services
             _iProduct = iProduct;
         }
 
+        public async Task<List<Produto>> ListarProdutosComEstoque()
+        {
+            return await _iProduct.ListarProdutos(p => p.QtdEstoque > 0);
+        }
+
         public async Task AddProduct(Produto produto)
         {
             var validaNome = produto.ValidarPropriedadeString(produto.Nome, "Nome");
             var validaValor = produto.ValidarPropriedadeDecimal(produto.Valor, "Valor");
             var validaQtdEstoque = produto.ValidarPropriedadeInt(produto.QtdEstoque, "QtdEstoque");
 
-            if(validaNome && validaValor && validaQtdEstoque)
+            if (validaNome && validaValor && validaQtdEstoque)
             {
                 produto.DataCadastro = DateTime.Now;
                 produto.DataAlteracao = DateTime.Now;
