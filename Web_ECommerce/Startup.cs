@@ -1,6 +1,7 @@
 using ApplicationApp.Interfaces;
 using ApplicationApp.OpenApp;
 using Domain.Interfaces.Generics;
+using Domain.Interfaces.InterfaceCompraUsuario;
 using Domain.Interfaces.InterfaceProduct;
 using Domain.Interfaces.InterfaceServices;
 using Domain.Services;
@@ -42,12 +43,15 @@ namespace Web_ECommerce
             //INTERFACE E REPOSITORIO
             services.AddSingleton(typeof(IGeneric<>), typeof(RepositoryGenerics<>));
             services.AddSingleton<IProduct, RepositoryProduct>();
+            services.AddSingleton<ICompraUsuario, RepositoryCompraUsuario>();
 
             //INTERFACE APLICAÇÃO
             services.AddSingleton<InterfaceProductApp, AppProduct>();
+            services.AddSingleton<InterfaceCompraUsuarioApp, AppCompraUsuario>();
 
             //INTERFACE DOMÍNIO
             services.AddSingleton<IServiceProduct, ServiceProduct>();
+            //services.AddSingleton<IServiceCompraUsuario, ServiceCompraUsuario>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

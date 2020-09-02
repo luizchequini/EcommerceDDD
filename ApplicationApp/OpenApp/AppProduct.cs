@@ -9,8 +9,8 @@ namespace ApplicationApp.OpenApp
 {
     public class AppProduct : InterfaceProductApp
     {
-        IProduct _iProduct;
-        IServiceProduct _iServiceProduct;
+        private readonly IProduct _iProduct;
+        private readonly IServiceProduct _iServiceProduct;
 
         public AppProduct(IProduct iProduct, IServiceProduct iServiceProduct)
         {

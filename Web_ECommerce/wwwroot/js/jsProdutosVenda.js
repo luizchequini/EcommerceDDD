@@ -1,10 +1,11 @@
-﻿var ObjetoVenda = new Object();
+﻿
 
+var ObjetoVenda = new Object();
 
-ObjetoVenda.AdicionaNoCarrinho = function (idproduto) {
+ObjetoVenda.AdicionarCarrinho = function (idProduto) {
 
-    var nome = $('#nome_' + idproduto).val();
-    var qtd = $('#qtd_' + idproduto).val();
+    var nome = $("#nome_" + idProduto).val();
+    var qtd = $("#qtd_" + idProduto).val();
 
     $.ajax({
         type: 'POST',
@@ -13,17 +14,28 @@ ObjetoVenda.AdicionaNoCarrinho = function (idproduto) {
         cache: false,
         async: true,
         data: {
-
-            "id": idproduto, "nome": nome, "qtd": qtd
+            "id": idProduto, "nome": nome, "qtd": qtd
         },
         success: function (data) {
+
+            if (data.sucesso) {
+                // 1 alert-success// 2 alert-warning// 3 alert-danger
+                ObjetoAlerta.AlertarTela(1, "Produto adicionado no carrinho!");
+            }
+            else {
+                // 1 alert-success// 2 alert-warning// 3 alert-danger
+                ObjetoAlerta.AlertarTela(2, "Necessário efetuar o login!");
+            }
 
         }
     });
 
+
 }
 
-ObjetoVenda.CarregaProduto = function () {
+
+ObjetoVenda.CarregaProdutos = function () {
+
     $.ajax({
         type: 'GET',
         url: "/api/ListaProdutoComEstoque",
@@ -34,28 +46,39 @@ ObjetoVenda.CarregaProduto = function () {
 
             var htmlConteudo = "";
 
-            data.forEach(function (entitie) {
+            data.forEach(function (Entitie) {
 
-                htmlConteudo += "<div class='col-xs-12 col-sm-4 col-md-4 col-lg-4'>";
+                htmlConteudo += " <div class='col-xs-12 col-sm-4 col-md-4 col-lg-4'>";
 
-                var idNome = 'nome_' + entitie.id;
-                var idQtd = 'qtd_' + entitie.id;
+                var idNome = "nome_" + Entitie.id;
+                var idQtd = "qtd_" + Entitie.id;
 
-                htmlConteudo += "<label id:'" + idNome + "'> Produto: " + entitie.nome + "</label></br>";
-                htmlConteudo += "<label> Valor: " + entitie.valor + "</label></br>";
+                htmlConteudo += "<label id='" + idNome + "' > Produto: " + Entitie.nome + "</label></br>";
+                htmlConteudo += "<label>  Valor: " + Entitie.valor + "</label></br>";
 
-                htmlConteudo += "quantidade: <input type='number' value='1'" + idQtd + "'>";
+                htmlConteudo += "Quantidade : <input type'number' value='1' id='" + idQtd + "'>";
 
-                htmlConteudo += "<input type='button' onclick='ObjetoVenda.AdicionaNoCarrinho'(" + entitie.id + ")' value = 'Comprar' </br>";
+                htmlConteudo += "<input type='button' onclick='ObjetoVenda.AdicionarCarrinho(" + Entitie.id + ")' value ='Comprar'> </br> ";
 
-                htmlConteudo += "</div>"
-            });
+                htmlConteudo += " </div>";
 
-            $("#DivVendas").html(htmlConteudo);
+            }); 8
+
+            $("#DivVenda").html(htmlConteudo);
         }
     });
+
+}
+
+
+ObjetoVenda.CarregaQtdCarrinho = function () {
+
+    $("#qtdCarrinho").text("(0)");
+
+    setTimeout(ObjetoVenda.CarregaQtdCarrinho, 10000);
 }
 
 $(function () {
-    ObjetoVenda.CarregaProduto();
+    ObjetoVenda.CarregaProdutos();
+    ObjetoVenda.CarregaQtdCarrinho();
 });
