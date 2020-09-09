@@ -1,6 +1,4 @@
-﻿
-
-var ObjetoVenda = new Object();
+﻿var ObjetoVenda = new Object();
 
 ObjetoVenda.AdicionarCarrinho = function (idProduto) {
 
@@ -74,6 +72,21 @@ ObjetoVenda.CarregaProdutos = function () {
 ObjetoVenda.CarregaQtdCarrinho = function () {
 
     $("#qtdCarrinho").text("(0)");
+
+    $.ajax({
+        type: 'GET',
+        url: "/api/QuantidadeProdutoCarrinhoUsuario",
+        dataType: "JSON",
+        cache: false,
+        async: true,
+        success: function (data) {
+
+            if (data.sucesso) {
+                $("#qtdCarrinho").text("(" + data.qtd + ")");
+            }
+
+        }
+    });
 
     setTimeout(ObjetoVenda.CarregaQtdCarrinho, 10000);
 }

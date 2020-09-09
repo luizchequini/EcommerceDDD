@@ -1,10 +1,7 @@
 ﻿using ApplicationApp.Interfaces;
 using Domain.Interfaces.InterfaceCompraUsuario;
-using Domain.Interfaces.InterfaceServices;
 using Entities.Entities;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ApplicationApp.OpenApp
@@ -16,6 +13,11 @@ namespace ApplicationApp.OpenApp
         public AppCompraUsuario(ICompraUsuario CompraUsuario)
         {
             _ICompraUsuario = CompraUsuario;
+        }
+
+        public async Task<int> QuantidadeProdutoCarrinhoUsuario(string userId)
+        {
+            return await _ICompraUsuario.QuantidadeProdutosCarrinhoUsuario(userId);
         }
 
         public async Task Add(CompraUsuario compraUsuario)

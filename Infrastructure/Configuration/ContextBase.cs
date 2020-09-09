@@ -33,7 +33,7 @@ namespace Infrastructure.Configuration
 
         private string GetStringConnectionConfig()
         {
-            string strCon = "Server=LAPTOP-CV9KCCO0\\SQLEXPRESS01;Database=EcommerceDDD;User Id=sa;password=BancoDeDados;Trusted_Connection=False;MultipleActiveResultSets=true;";
+            string strCon = "Server=LAPTOP-CV9KCCO0\\SQLEXPRESS01;Database=EcommerceDDD;User Id=sa;password=1234;Trusted_Connection=False;MultipleActiveResultSets=true;";
             return strCon;
         }
     }

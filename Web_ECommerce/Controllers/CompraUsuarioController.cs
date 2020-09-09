@@ -32,7 +32,7 @@ namespace Web_ECommerce.Controllers
                 {
                     ProdutoId = Convert.ToInt32(id),
                     QtdCompra = Convert.ToInt32(qtd),
-                    Estado = EnumEstadoCompra.Produto_Caminho,
+                    Estado = EnumEstadoCompra.Produto_Carrinho,
                     UserId = usuario.Id
                 });
 
@@ -40,6 +40,23 @@ namespace Web_ECommerce.Controllers
             }
 
             return Json(new { sucesso = false });
+        }
+
+        [HttpGet("/api/QuantidadeProdutoCarrinhoUsuario")]
+        public async Task<JsonResult> QuantidadeProdutoCarrinhoUsuario()
+        {
+            var usuario = await _userManager.GetUserAsync(User);
+
+            var qtd = 0;
+
+            if (usuario != null)
+            {
+                qtd = await _interfaceCompraUsuarioApp.QuantidadeProdutoCarrinhoUsuario(usuario.Id);
+
+                return Json(new { sucesso = true, qtd = qtd });
+            }
+
+            return Json(new { sucesso = false, qtd = qtd });
         }
     }
 }
