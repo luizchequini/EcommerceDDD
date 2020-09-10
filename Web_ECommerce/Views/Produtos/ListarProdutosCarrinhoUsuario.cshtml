@@ -17,6 +17,9 @@
                 @Html.DisplayNameFor(model => model.Nome)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Imagem)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Descricao)
             </th>
             <th>
@@ -39,6 +42,14 @@
 
                 <td>
                     @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @{
+                        if (!string.IsNullOrWhiteSpace(item.Url))
+                        {
+                            <img width="80" height="80" src="@item.Url" />
+                        }
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Descricao)

@@ -39,6 +39,7 @@ namespace Infrastructure.Repository.Repositories
                                                      {
                                                          Id = p.Id,
                                                          Nome = p.Nome,
+                                                         Url = p.Url,
                                                          Descricao = p.Descricao,
                                                          Observacao = p.Observacao,
                                                          Valor = p.Valor,
@@ -69,6 +70,7 @@ namespace Infrastructure.Repository.Repositories
                                                      {
                                                          Id = p.Id,
                                                          Nome = p.Nome,
+                                                         Url = p.Url,
                                                          Descricao = p.Descricao,
                                                          Observacao = p.Observacao,
                                                          Valor = p.Valor,

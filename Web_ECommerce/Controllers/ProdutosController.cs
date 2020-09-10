@@ -1,9 +1,14 @@
 ﻿using ApplicationApp.Interfaces;
 using Entities.Entities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.IO;
 using System.Linq;
+using System.Security;
+using System.Security.Permissions;
 using System.Threading.Tasks;
 
 namespace Web_ECommerce.Controllers
@@ -16,11 +21,15 @@ namespace Web_ECommerce.Controllers
         public readonly InterfaceProductApp _interfaceProductApp;
 
         public readonly InterfaceCompraUsuarioApp _interfaceCompraUsuarioApp;
-        public ProdutosController(InterfaceProductApp interfaceProductApp, UserManager<ApplicationUser> userManager, InterfaceCompraUsuarioApp interfaceCompraUsuarioApp)
+
+        private IWebHostEnvironment _webHostEnvironment;
+
+        public ProdutosController(InterfaceProductApp interfaceProductApp, UserManager<ApplicationUser> userManager, InterfaceCompraUsuarioApp interfaceCompraUsuarioApp, IWebHostEnvironment webHostEnvironment)
         {
             _userManager = userManager;
             _interfaceProductApp = interfaceProductApp;
             _interfaceCompraUsuarioApp = interfaceCompraUsuarioApp;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: ProdutosController
@@ -64,6 +73,9 @@ namespace Web_ECommerce.Controllers
 
                     return View("Create", produto);
                 }
+
+                await SalvarImagemProduto(produto);
+
             }
             catch
             {
@@ -180,6 +192,33 @@ namespace Web_ECommerce.Controllers
             catch
             {
                 return View();
+            }
+        }
+
+        public async Task SalvarImagemProduto(Produto produto)
+        {
+            try
+            {
+                var prod = await _interfaceProductApp.GetEntityById(produto.Id);
+
+                if (produto.Imagem != null)
+                {
+                    var webRoot = _webHostEnvironment.WebRootPath;
+                    var permissionSet = new PermissionSet(PermissionState.Unrestricted);
+                    var writePermission = new FileIOPermission(FileIOPermissionAccess.Append, string.Concat(webRoot, "/imagensProdutos"));
+                    permissionSet.AddPermission(writePermission);
+
+                    var Estension = System.IO.Path.GetExtension(produto.Imagem.FileName);
+                    var nomeArquivo = string.Concat(prod.Id.ToString(), Estension);
+                    var diretorioArquivoSalvar = string.Concat(webRoot, "\\imagensProdutos\\", nomeArquivo);
+                    produto.Imagem.CopyTo(new FileStream(diretorioArquivoSalvar, FileMode.Create));
+                    produto.Url = string.Concat("https://localhost:5001", "/imagensProdutos", nomeArquivo);
+
+                    await _interfaceProductApp.UpdateProduct(produto);
+                }
+            }
+            catch (Exception)
+            {
             }
         }
     }
