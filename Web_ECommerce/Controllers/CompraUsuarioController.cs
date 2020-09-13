@@ -1,24 +1,71 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ApplicationApp.Interfaces;
+﻿using ApplicationApp.Interfaces;
 using Entities.Entities;
 using Entities.Entities.Enums;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
+using Web_ECommerce.Models.Helper;
 
 namespace Web_ECommerce.Controllers
 {
-    public class CompraUsuarioController : Controller
+    public class CompraUsuarioController : HelperQrCode
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly InterfaceCompraUsuarioApp _interfaceCompraUsuarioApp;
+        private IWebHostEnvironment _webHostEnvironment;
 
-        public CompraUsuarioController(UserManager<ApplicationUser> userManager, InterfaceCompraUsuarioApp interfaceCompraUsuarioApp)
+        public CompraUsuarioController(UserManager<ApplicationUser> userManager, InterfaceCompraUsuarioApp interfaceCompraUsuarioApp, IWebHostEnvironment webHostEnvironment)
         {
             _userManager = userManager;
             _interfaceCompraUsuarioApp = interfaceCompraUsuarioApp;
+            _webHostEnvironment = webHostEnvironment;
+        }
+
+        public async Task<IActionResult> Imprimir()
+        {
+            var usuario = await _userManager.GetUserAsync(User);
+            var compraUsuario = await _interfaceCompraUsuarioApp.ProdutosComprados(usuario.Id);
+
+            return await Download(compraUsuario, _webHostEnvironment);
+        }
+
+        public async Task<IActionResult> FinalizarCompra()
+        {
+            var usuario = await _userManager.GetUserAsync(User);
+            var compraUsuario = await _interfaceCompraUsuarioApp.CarrinhoCompras(usuario.Id);
+
+            return View(compraUsuario);
+        }
+
+        public async Task<IActionResult> MinhasCompras(bool mensagem = false)
+        {
+            var usuario = await _userManager.GetUserAsync(User);
+            var compraUsuario = await _interfaceCompraUsuarioApp.ProdutosComprados(usuario.Id);
+
+            if (mensagem)
+            {
+                ViewBag.Sucesso = true;
+                ViewBag.Mensagem = "Compra efetivada com sucesso. Pague o boleto para garantir sua compra!";
+            }
+
+            return View(compraUsuario);
+        }
+
+        public async Task<IActionResult> ComfirmaCompra()
+        {
+            var usuario = await _userManager.GetUserAsync(User);
+            var sucesso = await _interfaceCompraUsuarioApp.ConfirmaCompraCarrinhoUsuario(usuario.Id);
+
+            if (sucesso)
+            {
+                return RedirectToAction("MinhasCompras", new { mensagem = true });
+            }
+            else
+            {
+                return RedirectToAction("FinalizarCompra");
+            }
         }
 
         [HttpPost("/api/AdicionaProdutoNoCarrinho")]
@@ -26,7 +73,7 @@ namespace Web_ECommerce.Controllers
         {
             var usuario = await _userManager.GetUserAsync(User);
 
-            if(usuario != null)
+            if (usuario != null)
             {
                 await _interfaceCompraUsuarioApp.Add(new CompraUsuario
                 {

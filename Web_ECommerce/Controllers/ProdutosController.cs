@@ -212,7 +212,7 @@ namespace Web_ECommerce.Controllers
                     var nomeArquivo = string.Concat(prod.Id.ToString(), Estension);
                     var diretorioArquivoSalvar = string.Concat(webRoot, "\\imagensProdutos\\", nomeArquivo);
                     produto.Imagem.CopyTo(new FileStream(diretorioArquivoSalvar, FileMode.Create));
-                    produto.Url = string.Concat("https://localhost:5001", "/imagensProdutos", nomeArquivo);
+                    produto.Url = string.Concat("https://localhost:5001", "/imagensProdutos/", nomeArquivo);
 
                     await _interfaceProductApp.UpdateProduct(produto);
                 }

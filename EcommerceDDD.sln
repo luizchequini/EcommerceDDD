@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApplicationApp", "ApplicationApp\ApplicationApp.csproj", "{5F5EC808-4976-4403-8EE3-A17A1B3141F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web_ECommerce", "Web_ECommerce\Web_ECommerce.csproj", "{CF952ADB-D019-4422-BECB-8C8386628CA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web_ECommerce", "Web_ECommerce\Web_ECommerce.csproj", "{CF952ADB-D019-4422-BECB-8C8386628CA6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

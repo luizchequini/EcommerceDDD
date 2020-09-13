@@ -1,5 +1,6 @@
 ﻿using Entities.Entities.Enums;
 using Entities.Notifications;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -31,5 +32,20 @@ namespace Entities.Entities
         [Column(Order = 1)]
         public string UserId { get; set; }
         public virtual ApplicationUser ApplicationUser { get; set; }
+
+        [NotMapped]
+        [Display(Name ="Quantidade Total")]
+        public int QuantidadeProdutos { get; set; }
+
+        [NotMapped]
+        [Display(Name = "Valor Total")]
+        public decimal ValorTotal { get; set; }
+
+        [NotMapped]
+        [Display(Name ="Endereço de Entrega")]
+        public string EnderecoCompleto { get; set; }
+
+        [NotMapped]
+        public List<Produto> ListaProdutos { get; set; }
     }
 }

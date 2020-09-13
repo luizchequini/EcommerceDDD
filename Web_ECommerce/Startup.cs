@@ -51,7 +51,7 @@ namespace Web_ECommerce
 
             //INTERFACE DOMÍNIO
             services.AddSingleton<IServiceProduct, ServiceProduct>();
-            //services.AddSingleton<IServiceCompraUsuario, ServiceCompraUsuario>();
+            services.AddSingleton<IServiceCompraUsuario, ServiceCompraUsuario>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

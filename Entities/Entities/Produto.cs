@@ -61,6 +61,7 @@ namespace Entities.Entities
         public int QtdCompra { get; set; }
 
         [NotMapped]
+        [Display(Name = "Imagem")]
         public IFormFile Imagem { get; set; }
 
         [Column("PRD_URL")]
